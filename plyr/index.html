@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Screen Shaka Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #000;
+        }
+        .controls {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            transition: opacity 0.3s ease;
+        }
+        .seek-bar {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: lightgrey;
+            border-radius: 5%;
+            outline: none;
+            margin-bottom: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .seek-bar::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: blue;
+            z-index: 0;
+            width: 0;
+        }
+        .seek-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .seek-bar::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .control-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            font-size: 16px;
+        }
+        .control-bar .left-controls, .control-bar .right-controls {
+            display: flex;
+            align-items: center;
+        }
+        .control-bar .left-controls i, .control-bar .right-controls i {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .control-bar .right-controls {
+            margin-left: auto;
+        }
+        .time-display {
+            margin: 0 15px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            min-width: 100px;
+            z-index: 1;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .dropdown-content button {
+            color: white;
+            background-color: transparent;
+            border: none;
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .dropdown-content button:hover {
+            background-color: #555;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* Expand dropdown upwards */
+        .dropdown-content {
+            bottom: 30px;
+        }
+        /* Hide default controls */
+        video::-webkit-media-controls {
+            display: none !important;
+        }
+        /* Auto-hide controls */
+        .controls.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        /* Auto-hide scrollbars */
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" preload="auto"></video>
+        <div class="controls" id="controls">
+            <!-- Seek Bar Above Controls -->
+            <input type="range" id="seekBar" class="seek-bar" value="0" max="100">
+            <div class="control-bar">
+                <div class="left-controls">
+                    <i id="rewind10" class="fas fa-undo"></i>
+                    <i id="playPause" class="fas fa-play"></i>
+                    <i id="forward10" class="fas fa-redo"></i>
+                    <div class="time-display"><span id="currentTime">00:00:00</span> / <span id="duration">00:00:00</span></div>
+                </div>
+                <div class="right-controls">
+                    <div class="dropdown">
+                        <i class="fas fa-tachometer-alt"></i> Speed
+                        <div class="dropdown-content playback-speed-options">
+                            <button data-speed="0.5">0.5x</button>
+                            <button data-speed="1.0" class="active">1.0x</button>
+                            <button data-speed="1.25">1.25x</button>
+                            <button data-speed="1.5">1.5x</button>
+                            <button data-speed="2.0">2x</button>
+                            <button data-speed="3.0">3x</button>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <i class="fas fa-cog"></i> Quality
+                        <div class="dropdown-content quality-options">
+                            <button data-quality="240p">240p</button>
+                            <button data-quality="360p">360p</button>
+                            <button data-quality="720p">720p</button>
+                        </div>
+                    </div>
+                    <i id="volume" class="fas fa-volume-up"></i>
+                    <i id="fullscreen" class="fas fa-expand"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.0.10/shaka-player.compiled.js"></script>
+    <script>
+        let player;
+        let hideControlsTimeout;
+
+        function initPlayer() {
+            const video = document.getElementById('video');
+            const controls = document.getElementById('controls');
+            player = new shaka.Player(video);
+
+            // Load video from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const manifestUri = urlParams.get('url');
+            if (manifestUri) {
+                player.load(manifestUri).then(() => {
+                    console.log('The video has been successfully loaded.');
+                }).catch(onErrorEvent);
+            }
+
+            // Update seek bar and time display
+            video.addEventListener('timeupdate', updateTimeDisplay);
+            video.addEventListener('loadedmetadata', updateTimeDisplay);
+
+            // Keyboard controls
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+
+            // Volume control click
+            document.getElementById('volume').addEventListener('click', toggleMute);
+            document.getElementById('playPause').addEventListener('click', togglePlayPause);
+            document.getElementById('rewind10').addEventListener('click', () => skip(-10));
+            document.getElementById('forward10').addEventListener('click', () => skip(10));
+            document.getElementById('fullscreen').addEventListener('click', toggleFullScreen);
+
+            // Handle playback speed change
+            document.querySelectorAll('.playback-speed-options button').forEach(button => {
+                button.addEventListener('click', () => {
+                    setPlaybackSpeed(parseFloat(button.dataset.speed));
+                });
+            });
+
+            // Handle quality change
+            document.querySelectorAll('.quality-options button').forEach(button => {
+                button.addEventListener('click', () => {
+                    changeQuality(button.dataset.quality);
+                });
+            });
+
+            // Seek bar events
+            const seekBar = document.getElementById('seekBar');
+            seekBar.addEventListener('input', (e) => {
+                video.currentTime = video.duration * (e.target.value / 100);
+            });
+
+            // Auto-hide controls
+            document.addEventListener('mousemove', showControls);
+            hideControlsAfterTimeout();
+        }
+
+        // Toggle Play/Pause
+        function togglePlayPause() {
+            const video = document.getElementById('video');
+            if (video.paused) {
+                video.play();
+                document.getElementById('playPause').classList.replace('fa-play', 'fa-pause');
+            } else {
+                video.pause();
+                document.getElementById('playPause').classList.replace('fa-pause', 'fa-play');
+            }
+        }
+
+        // Toggle Fullscreen
+        function toggleFullScreen() {
+            const videoContainer = document.getElementById('video-container');
+            if (!document.fullscreenElement) {
+                videoContainer.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Skip forward/backward
+        function skip(seconds) {
+            const video = document.getElementById('video');
+            video.currentTime += seconds;
+        }
+
+        // Update time display and seek bar
+        function updateTimeDisplay() {
+            const video = document.getElementById('video');
+            const currentTimeElement = document.getElementById('currentTime');
+            const durationElement = document.getElementById('duration');
+            const seekBar = document.getElementById('seekBar');
+
+            // Update time display
+            const currentTime = video.currentTime;
+            const duration = video.duration;
+
+            currentTimeElement.textContent = formatTime(currentTime);
+            durationElement.textContent = formatTime(duration);
+
+            // Update seek bar value
+            seekBar.value = (currentTime / duration) * 100;
+
+            // Update played portion's color
+            seekBar.style.setProperty('--played-portion', `${seekBar.value}%`);
+            seekBar.style.setProperty('--unplayed-portion', `${100 - seekBar.value}%`);
+        }
+
+        // Format time in HH:MM:SS
+        function formatTime(time) {
+            const hours = Math.floor(time / 3600);
+            const minutes = Math.floor((time % 3600) / 60);
+            const seconds = Math.floor(time % 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Show controls
+        function showControls() {
+            const controls = document.getElementById('controls');
+            controls.classList.remove('hidden');
+            hideControlsAfterTimeout();
+        }
+
+        // Hide controls after 3 seconds
+        function hideControlsAfterTimeout() {
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(() => {
+                const controls = document.getElementById('controls');
+                controls.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Handle keyboard shortcuts
+        function handleKeyboardShortcuts(e) {
+            const video = document.getElementById('video');
+            switch (e.key) {
+                case ' ':
+                    togglePlayPause();
+                    break;
+                case 'ArrowLeft':
+                    skip(-5);
+                    break;
+                case 'ArrowRight':
+                    skip(5);
+                    break;
+                case 'f':
+                    toggleFullScreen();
+                    break;
+            }
+        }
+
+        // Toggle mute/unmute
+        function toggleMute() {
+            const video = document.getElementById('video');
+            video.muted = !video.muted;
+            document.getElementById('volume').classList.toggle('fa-volume-up', !video.muted);
+            document.getElementById('volume').classList.toggle('fa-volume-mute', video.muted);
+        }
+
+        // Set playback speed
+        function setPlaybackSpeed(speed) {
+            const video = document.getElementById('video');
+            video.playbackRate = speed;
+            document.querySelectorAll('.playback-speed-options button').forEach(button => {
+                button.classList.toggle('active', parseFloat(button.dataset.speed) === speed);
+            });
+        }
+
+        // Change video quality (assuming adaptive bitrate streaming)
+        function changeQuality(quality) {
+            console.log(`Changing quality to ${quality}`);
+            // Implement quality switching using Shaka Player's API
+        }
+
+        function onErrorEvent(event) {
+            console.error('Error code', event.detail.code, 'object', event.detail);
+        }
+
+        document.addEventListener('DOMContentLoaded', initPlayer);
+    </script>
+</body>
+</html>
