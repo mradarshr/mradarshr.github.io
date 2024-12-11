@@ -72,3 +72,30 @@ function openPopup(recordingSchedule, strtotime) {
   overlay.appendChild(popupCard);
   document.body.appendChild(overlay);
 }
+
+function openStream(url) {
+    // Create the overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'stream-overlay';
+    overlay.innerHTML = `
+      <div class="overlay">
+        <div class="overlay-header">
+          <svg class="close-btn" onclick="closeStream()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </div>
+        <iframe src="${url}" allowfullscreen></iframe>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Show the overlay
+    overlay.style.display = 'flex';
+  }
+
+  function closeStream() {
+    const overlay = document.getElementById('stream-overlay');
+    if (overlay) {
+      overlay.remove();
+    }
+  }
