@@ -1,5 +1,9 @@
 const plyrurl = "https://plyrv.pages.dev/#";
 
+function goBack() {
+          window.history.back();
+        }
+
 function openPopup(recordingSchedule, strtotime) {
   const overlay = document.createElement('div');
   overlay.id = 'popup-overlay';
