@@ -81,14 +81,14 @@ h1 {
   padding: 16px;
 }
 .card-container {
-  width: 476px;
+  width: 375px;
   gap: 30px;
   padding: 30px;
   justify-items: center;
   box-sizing: border-box;
 }
 .card {
-  width: 476px;
+  width: 375px;
   border-radius: 20px;
   overflow: hidden;
   background-color: #f9f9f9;
@@ -99,23 +99,23 @@ h1 {
   text-align: center;
 }
 .thumbnail {
-  height: 240px;
+  height: 211px;
   object-fit: cover;
   border-bottom: 1px solid #ddd;
 }
 .info {
-  padding: 15px;
+  padding: 10px;
   background-color: #fff;
   width: 100%;
   box-sizing: border-box;
 }
 .title {
-  font-size: 22px;
+  font-size: 20px;
   color: #333;
   margin-bottom: 10px;
 }
 .date {
-  font-size: 18px;
+  font-size: 16px;
   color: #999;
   margin: 0;
 }
