@@ -1,218 +1,197 @@
-      body {
-            font-family: 'League Spartan', sans-serif;
-            margin: 20px;
-          }
-          a {
-            text-decoration: none;
-          }
-          h1 {
-            font-size: 24px;
-          }
-          .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-          }
-          .header img {
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            margin-right: 10px;
-          }
-          .header h1 {
-            font-size: 35px;
-            margin: 0;
-            line-height: 1.25;
-          }
-          .item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            min-height: 65px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            line-height: 1.25;
-          }
-          .item img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            margin-left: 15px;
-          }
-          .item a {
-            color: black;
-            font-size: 20px;
-            text-decoration: none;
-            overflow-wrap: anywhere;
-          }
-          .item a:hover {
-            color: #555;
-          }
-          .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-          }
-          .tabs a {
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            background: #f9f9f9;
-            font-size: 18px;
-            color: #333;
-          }
-          .tabs a.active {
-            background: #007bff;
-            color: #fff;
-          }
-          .tabs a:hover {
-            background: #0056b3;
-            color: #fff;
-          }
-          .cc-align {
-            display: grid;                 /* Use CSS Grid */
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* 3 items per row, adjust for screen size */
-            gap: 16px;                     /* Add space between grid items */
-            padding: 16px;                 /* Optional padding around the grid */
-          }
-          /* Overall grid layout */
-          .card-container {
-            width: 476px;
-            gap: 30px; /* Space between cards */
-            padding: 30px;
-            justify-items: center; /* Center cards in their grid cells */
-            box-sizing: border-box; /* Ensure padding doesn't break the layout */
-          }
-          
-          /* Card styling */
-          .card {
-            width: 476px; /* Use 100% width to fit the grid column */
-            border-radius: 20px;
-            overflow: hidden;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-          }
-          
-          /* Thumbnail styling */
-          .thumbnail {
-            height: 240px;
-            object-fit: cover;
-            border-bottom: 1px solid #ddd;
-          }
-          
-          /* Info section */
-          .info {
-            padding: 15px;
-            background-color: #fff;
-            width: 100%;
-            box-sizing: border-box;
-          }
-          
-          .title {
-            font-size: 22px;
-            color: #333;
-            margin-bottom: 10px;
-          }
-          
-          .date {
-            font-size: 18px;
-            color: #999;
-            margin: 0;
-          }
-          
-          /* Watch button */
-          .watch-btn {
-            display: inline-block;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
-          }
-          
-          .watch-btn:hover {
-            background-color: #0056b3;
-          }
-
-          .watch-btn.disabled {
-            background-color: #d6d6d6;
-            color: #8a8a8a;
-            cursor: not-allowed;
-          }
-
-          .quality-btn {
-            display: block;
-            margin: 10px 0;
-            padding: 10px 20px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-          }
-          
-          .quality-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-          }
-          
-          .quality-btn:active {
-            transform: scale(0.95);
-          }
-
-          /* Overlay iframe styling */
-          #stream-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-          }
-          
-          #stream-overlay iframe {
-            width: 85%;
-            height: 80%;
-            border: none;
-            border-radius: 10px;
-          }
-          
-          .overlay-header {
-            position: absolute;
-            top: 10%;
-            width: 85%;
-            height: 35px;
-            background-color: #000;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 25px;
-          }
-          
-          .close-btn {
-            cursor: pointer;
-            width: 25px;
-            height: 25px;
-            fill: #fff;
-          }
+body {
+  font-family: 'League Spartan', sans-serif;
+  margin: 20px;
+}
+a {
+  text-decoration: none;
+}
+h1 {
+  font-size: 24px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.header img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.header h1 {
+  font-size: 35px;
+  margin: 0;
+  line-height: 1.25;
+}
+.item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  min-height: 65px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  line-height: 1.25;
+}
+.item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+.item a {
+  color: black;
+  font-size: 20px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.item a:hover {
+  color: #555;
+}
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.tabs a {
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  background: #f9f9f9;
+  font-size: 18px;
+  color: #333;
+}
+.tabs a.active {
+  background: #007bff;
+  color: #fff;
+}
+.tabs a:hover {
+  background: #0056b3;
+  color: #fff;
+}
+.cc-align {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.card-container {
+  width: 476px;
+  gap: 30px;
+  padding: 30px;
+  justify-items: center;
+  box-sizing: border-box;
+}
+.card {
+  width: 476px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.thumbnail {
+  height: 240px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+.info {
+  padding: 15px;
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+.title {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 10px;
+}
+.date {
+  font-size: 18px;
+  color: #999;
+  margin: 0;
+}
+.watch-btn {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.watch-btn:hover {
+  background-color: #0056b3;
+}
+.watch-btn.disabled {
+  background-color: #d6d6d6;
+  color: #8a8a8a;
+  cursor: not-allowed;
+}
+.quality-btn {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.quality-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+.quality-btn:active {
+  transform: scale(0.95);
+}
+#stream-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+#stream-overlay iframe {
+  width: 85%;
+  height: 80%;
+  border: none;
+  border-radius: 10px;
+}
+.overlay-header {
+  position: absolute;
+  top: 10%;
+  width: 85%;
+  height: 35px;
+  background-color: #000;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 25px;
+}
+.close-btn {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  fill: #fff;
+}
