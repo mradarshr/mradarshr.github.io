@@ -44,13 +44,22 @@ function openPopup(recordingSchedule, strtotime) {
   heading.innerText = 'Choose Quality';
 
   const createButton = (text, quality) => {
-    const stream_url = `${plyrurl}${encodeURIComponent(
-      `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`
-    )}`;
-    const button = document.createElement('a');
-    button.href = stream_url;
+    const stream_url = `https://plyrv.pages.dev/#https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`;
+    const button = document.createElement('button');
     button.innerText = text;
     button.className = 'quality-btn';
+    button.style.display = 'block';
+    button.style.margin = '10px 0';
+    button.style.padding = '10px 20px';
+    button.style.backgroundColor = '#007bff';
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.cursor = 'pointer';
+    button.onclick = () => {
+      openStream(stream_url);
+      document.body.removeChild(overlay);
+    };
     return button;
   };
 
@@ -74,28 +83,38 @@ function openPopup(recordingSchedule, strtotime) {
 }
 
 function openStream(url) {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.id = 'stream-overlay';
-    overlay.innerHTML = `
-      <div class="overlay">
-        <div class="overlay-header">
-          <svg class="close-btn" onclick="closeStream()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18M6 6l12 12"></path>
-          </svg>
-        </div>
-        <iframe src="${url}" allowfullscreen></iframe>
-      </div>
-    `;
-    document.body.appendChild(overlay);
+  // Create the overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'stream-overlay';
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  overlay.style.display = 'flex';
+  overlay.style.flexDirection = 'column';
+  overlay.style.justifyContent = 'center';
+  overlay.style.alignItems = 'center';
+  overlay.style.zIndex = '1000';
 
-    // Show the overlay
-    overlay.style.display = 'flex';
-  }
+  overlay.innerHTML = `
+    <div class="overlay-header" style="background: #000; color: white; width: 100%; padding: 10px; text-align: right; position: sticky; top: 0; z-index: 100;">
+      <svg class="close-btn" onclick="closeStream()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px; cursor: pointer;">
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </div>
+    <iframe src="${url}" style="width: 100%; height: 100%; border: none; flex-grow: 1;" allowfullscreen></iframe>
+  `;
+  document.body.appendChild(overlay);
 
-  function closeStream() {
-    const overlay = document.getElementById('stream-overlay');
-    if (overlay) {
-      overlay.remove();
-    }
+  // Show the overlay
+  overlay.style.display = 'flex';
+}
+
+function closeStream() {
+  const overlay = document.getElementById('stream-overlay');
+  if (overlay) {
+    overlay.remove();
   }
+}
