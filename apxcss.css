@@ -121,6 +121,7 @@ h1 {
   margin: 0;
 }
 .watch-btn {
+  font-family: 'League Spartan', sans-serif;
   display: inline-block;
   background-color: #007bff;
   color: #fff;
@@ -140,6 +141,7 @@ h1 {
   cursor: not-allowed;
 }
 .quality-btn {
+  font-family: 'League Spartan', sans-serif;
   display: block;
   margin: 10px 0;
   padding: 10px 20px;
