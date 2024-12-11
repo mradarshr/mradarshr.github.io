@@ -43,21 +43,21 @@ function openPopup(recordingSchedule, strtotime) {
   const highQuality = document.createElement('a');
   highQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}`;
   highQuality.innerText = 'High Quality';
-  highQuality.className = 'quality-btn';
+  highQuality.className = 'watch-btn';
   highQuality.style.display = 'block';
   highQuality.style.margin = '10px 0';
 
   const mediumQuality = document.createElement('a');
   mediumQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}&endtime_epoch=1927156522&mode=4&txCodecTempName=360p&timeshift=1`;
   mediumQuality.innerText = 'Medium Quality';
-  mediumQuality.className = 'quality-btn';
+  mediumQuality.className = 'watch-btn';
   mediumQuality.style.display = 'block';
   mediumQuality.style.margin = '10px 0';
 
   const lowQuality = document.createElement('a');
   lowQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}&endtime_epoch=1927156522&mode=4&txCodecTempName=240p&timeshift=1`;
   lowQuality.innerText = 'Low Quality';
-  lowQuality.className = 'quality-btn';
+  lowQuality.className = 'watch-btn';
   lowQuality.style.display = 'block';
   lowQuality.style.margin = '10px 0';
 
