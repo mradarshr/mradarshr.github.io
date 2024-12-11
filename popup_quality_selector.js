@@ -1,3 +1,5 @@
+const plyrurl = "https://plyrv.pages.dev/#";
+
 function openPopup(recordingSchedule, strtotime) {
   const overlay = document.createElement('div');
   overlay.id = 'popup-overlay';
@@ -20,6 +22,7 @@ function openPopup(recordingSchedule, strtotime) {
   popupCard.style.textAlign = 'center';
   popupCard.style.maxWidth = '90%';
   popupCard.style.overflow = 'auto';
+  popupCard.style.position = 'relative';
 
   const closeButton = document.createElement('button');
   closeButton.innerText = '×';
@@ -30,7 +33,7 @@ function openPopup(recordingSchedule, strtotime) {
   closeButton.style.border = 'none';
   closeButton.style.fontSize = '24px';
   closeButton.style.cursor = 'pointer';
-  closeButton.style.color = 'white';
+  closeButton.style.color = '#333';
   closeButton.onclick = () => document.body.removeChild(overlay);
 
   overlay.onclick = (e) => {
@@ -40,32 +43,32 @@ function openPopup(recordingSchedule, strtotime) {
   const heading = document.createElement('h2');
   heading.innerText = 'Choose Quality';
 
-  const highQuality = document.createElement('a');
-  highQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}`;
-  highQuality.innerText = 'High Quality';
-  highQuality.className = 'watch-btn';
-  highQuality.style.display = 'block';
-  highQuality.style.margin = '10px 0';
+  const createButton = (text, quality) => {
+    const stream_url = `${plyrurl}${encodeURIComponent(
+      `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`
+    )}`;
+    const button = document.createElement('a');
+    button.href = stream_url;
+    button.innerText = text;
+    button.className = 'quality-btn';
+    return button;
+  };
 
-  const mediumQuality = document.createElement('a');
-  mediumQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}&endtime_epoch=1927156522&mode=4&txCodecTempName=360p&timeshift=1`;
-  mediumQuality.innerText = 'Medium Quality';
-  mediumQuality.className = 'watch-btn';
-  mediumQuality.style.display = 'block';
-  mediumQuality.style.margin = '10px 0';
+  const highQuality = createButton('High Quality', '');
+  const mediumQuality = createButton(
+    'Medium Quality',
+    '&endtime_epoch=1927156522&mode=4&txCodecTempName=360p&timeshift=1'
+  );
+  const lowQuality = createButton(
+    'Low Quality',
+    '&endtime_epoch=1927156522&mode=4&txCodecTempName=240p&timeshift=1'
+  );
 
-  const lowQuality = document.createElement('a');
-  lowQuality.href = `https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}&endtime_epoch=1927156522&mode=4&txCodecTempName=240p&timeshift=1`;
-  lowQuality.innerText = 'Low Quality';
-  lowQuality.className = 'watch-btn';
-  lowQuality.style.display = 'block';
-  lowQuality.style.margin = '10px 0';
-
+  popupCard.appendChild(closeButton);
   popupCard.appendChild(heading);
   popupCard.appendChild(highQuality);
   popupCard.appendChild(mediumQuality);
   popupCard.appendChild(lowQuality);
   overlay.appendChild(popupCard);
-  overlay.appendChild(closeButton);
   document.body.appendChild(overlay);
 }
