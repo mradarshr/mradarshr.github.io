@@ -20,8 +20,9 @@ function openPopup(recordingSchedule, strtotime) {
 
   const popupCard = document.createElement('div');
   popupCard.style.backgroundColor = 'white';
-  popupCard.style.padding = '20px';
+  popupCard.style.padding = '50px';
   popupCard.style.borderRadius = '10px';
+  popupCard.style.display = 'block';
   popupCard.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
   popupCard.style.textAlign = 'center';
   popupCard.style.maxWidth = '90%';
@@ -35,7 +36,7 @@ function openPopup(recordingSchedule, strtotime) {
   closeButton.style.right = '10px';
   closeButton.style.background = 'none';
   closeButton.style.border = 'none';
-  closeButton.style.fontSize = '24px';
+  closeButton.style.fontSize = '30px';
   closeButton.style.cursor = 'pointer';
   closeButton.style.color = '#333';
   closeButton.onclick = () => document.body.removeChild(overlay);
