@@ -22,9 +22,7 @@ function openPopup(recordingSchedule, strtotime) {
   popupCard.style.backgroundColor = 'white';
   popupCard.style.padding = '50px';
   popupCard.style.borderRadius = '10px';
-  popupCard.style.display = 'flex'; // Use flexbox
-  popupCard.style.flexDirection = 'column'; // Align items vertically
-  popupCard.style.alignItems = 'center'; // Center items horizontally
+  popupCard.style.display = 'block';
   popupCard.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
   popupCard.style.textAlign = 'center';
   popupCard.style.maxWidth = '90%';
@@ -49,7 +47,6 @@ function openPopup(recordingSchedule, strtotime) {
 
   const heading = document.createElement('h2');
   heading.innerText = 'Choose Quality';
-  heading..style.fontSize = '30px';
 
   const createButton = (text, quality) => {
     const stream_url = `https://plyrv.pages.dev/#https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`;
