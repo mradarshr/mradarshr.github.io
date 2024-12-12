@@ -49,17 +49,9 @@ function openPopup(recordingSchedule, strtotime) {
 
   const createButton = (text, quality) => {
     const stream_url = `https://plyrv.pages.dev/#https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`;
-    const button = document.createElement('button');
+    const button = document.createElement('a');
     button.innerText = text;
     button.className = 'quality-btn';
-    button.style.display = 'block';
-    button.style.margin = '10px 0';
-    button.style.padding = '10px 20px';
-    button.style.backgroundColor = '#007bff';
-    button.style.color = 'white';
-    button.style.border = 'none';
-    button.style.borderRadius = '5px';
-    button.style.cursor = 'pointer';
     button.onclick = () => {
       openStream(stream_url);
       document.body.removeChild(overlay);
