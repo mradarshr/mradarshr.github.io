@@ -80,9 +80,12 @@ h1 {
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 16px;
   padding: 15px;
+  justify-items: center;
 }
 .card-container {
   width: 375px;
+  gap: 16px;
+  padding: 15px;
   justify-items: center;
   box-sizing: border-box;
 }
