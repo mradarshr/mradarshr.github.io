@@ -159,13 +159,12 @@ h1 {
 }
 .quality-btn {
   font-family: 'League Spartan', sans-serif;
-  display: block;
+  display: inline-block;
   margin: 10px 0;
   padding: 10px 20px;
   text-decoration: none;
   color: white;
   background-color: #007bff;
-  border-radius: 5px;
   text-align: center;
   font-size: 16px;
   transition: background-color 0.3s, transform 0.2s;
@@ -193,7 +192,6 @@ h1 {
   width: 85%;
   height: 80%;
   border: none;
-  border-radius: 10px;
 }
 .overlay-header {
   position: absolute;
