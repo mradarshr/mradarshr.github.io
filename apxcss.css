@@ -48,7 +48,7 @@ lista {
   text-decoration: none;
   overflow-wrap: anywhere;
 }
-.lista:hover {
+lista:hover {
   color: #555;
 }
 .tabs {
