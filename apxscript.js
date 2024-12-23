@@ -62,7 +62,7 @@ function openPopup(recordingSchedule, strtotime) {
     button.innerText = text;
     button.className = 'quality-btn';
     button.onclick = () => {
-      openStream(stream_url);
+      openUrl(stream_url);
       document.body.removeChild(overlay);
     };
     return button;
