@@ -42,13 +42,13 @@ h1 {
   margin-right: 15px;
   margin-left: 15px;
 }
-.item a {
+lista {
   color: black;
   font-size: 20px;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
-.item a:hover {
+.lista:hover {
   color: #555;
 }
 .tabs {
