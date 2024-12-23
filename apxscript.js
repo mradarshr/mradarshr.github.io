@@ -4,6 +4,14 @@ function goBack() {
           window.history.back();
         }
 
+function openUrl(url) {
+    if (typeof url === 'string' && url.trim() !== '') {
+        window.location.href = url;
+    } else {
+        console.error('Invalid URL');
+    }
+}
+
 function openPopup(recordingSchedule, strtotime) {
   const overlay = document.createElement('div');
   overlay.id = 'popup-overlay';
