@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (usage && sender === 'ai') {
       const statsDiv = document.createElement('div');
       statsDiv.classList.add('stats-display');
-      statsDiv.textContent = `Tokens: ${usage.total_tokens} (${usage.prompt_tokens} prompt, ${usage.completion_tokens} completion)`;
+      statsDiv.textContent = "VED ai";
       messageDiv.appendChild(statsDiv);
     }
     
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (data.response && data.response.response && data.response.response.response) {
         // Extract the nested response.response.response
         const aiResponse = data.response.response.response;
-        const usage = "Meta Ai";
+        const usage = "VED Ai";
         addMessage(aiResponse, 'ai', usage);
       } else {
         addMessage("I'm sorry, I couldn't process your request. Please try again.", 'ai');
