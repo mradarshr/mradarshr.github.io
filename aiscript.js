@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(`Error: ${data.error}`, 'ai');
           } else if (data.response && data.response.response) {
             // Handle the nested response structure
-            addMessage(data.response.response, 'ai', data.response.usage);
+            addMessage(data.response.response, 'ai', "Ved AI");
           } else {
             addMessage("I'm sorry, I couldn't process your request. Please try again.", 'ai');
           }
