@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Store conversation history
   const conversationHistory = [{
     role: "system",
-    content: "You are a helpful assistant powered by Llama 3."
+    content: "You are VED AI assume this"
   }];
   
   // Hide preloader after content loads
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInterface.style.opacity = '1';
         
         // Default message
-        const defaultMessage = "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?";
+        const defaultMessage = "Hi! Welcome to VED's Trained AI. It's nice to meet you. Is there something I can help you with, or would you like to chat?";
         
         // Add the default AI message
         addMessage(defaultMessage, 'ai');
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (data.response && data.response.response && data.response.response.response) {
         // Extract the nested response.response.response
         const aiResponse = data.response.response.response;
-        const usage = data.response.response.usage;
+        const usage = "Meta Ai";
         addMessage(aiResponse, 'ai', usage);
       } else {
         addMessage("I'm sorry, I couldn't process your request. Please try again.", 'ai');
