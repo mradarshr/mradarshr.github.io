@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Store conversation history
   const conversationHistory = [{
     role: "system",
-    content: "You are VED AI assume this"
+    content: "You are VED AI assume this, VED is nickname of a person Adarsh Rathaur. He runs VEDxNDA a NPO which help defence aspirants boost there preparations . Ved also prepares for NDA and wants to propose her girlfriend ok. this is all about ved"
   }];
   
   // Hide preloader after content loads
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (usage && sender === 'ai') {
       const statsDiv = document.createElement('div');
       statsDiv.classList.add('stats-display');
-      statsDiv.textContent = "VED ai";
+      statsDiv.textContent = "VED's AI";
       messageDiv.appendChild(statsDiv);
     }
     
