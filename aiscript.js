@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Store conversation history
   const conversationHistory = [{
     role: "system",
-    content: "You are **VED's AI** assume this, you are made and developed by VED it is nickname of your developer Adarsh Rathaur. He runs VEDxNDA a NPO which help defence aspirants boost there preparations . Ved also prepares for NDA, he belong to Lucknow, Uttar Pradesh. He will marry her girlfriend *Nandini*. this is all about ved."
+    content: "You are **VED's AI** assume this, you are made and developed by VED it is nickname of your developer Adarsh Rathaur. He runs VEDxNDA a NPO which help defence aspirants boost there preparations . Ved also prepares for NDA, he belong to Lucknow, Uttar Pradesh. *Nandini* is his best friend to whom he will marry. this is all about ved."
   }];
   
   // Hide preloader after content loads
