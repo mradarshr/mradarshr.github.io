@@ -87,54 +87,54 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Function to add a message to the chat
       function addMessage(content, sender, usage = null) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message');
-        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
-        
-        // Process markdown-like syntax for code - FIX: Check if content is string before using replace
-        if (sender === 'ai' && typeof content === 'string') {
-          content = processCodeBlocks(content);
-        } else if (typeof content !== 'string') {
-          // If content is not a string, convert it to string
-          content = String(content);
-        }
-        
-        messageDiv.innerHTML = content;
-        
-        // Add token usage stats if available
-        if (usage && sender === 'ai') {
-          const statsDiv = document.createElement('div');
-          statsDiv.classList.add('stats-display');
-          statsDiv.textContent = `Tokens: ${usage.total_tokens} (${usage.prompt_tokens} prompt, ${usage.completion_tokens} completion)`;
-          messageDiv.appendChild(statsDiv);
-        }
-        
-        chatContainer.insertBefore(messageDiv, typingIndicator);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Add to conversation history
-        conversationHistory.push({
-          role: sender === 'user' ? 'user' : 'assistant',
-          content: content
-        });
-      }
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message');
+  messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+  
+  // Ensure content is a string
+  if (typeof content !== 'string') {
+    content = JSON.stringify(content); // Convert non-string content to a string
+  }
+  
+  // Process markdown-like syntax for code
+  if (sender === 'ai') {
+    content = processCodeBlocks(content);
+  }
+  
+  messageDiv.innerHTML = content;
+  
+  // Add token usage stats if available
+  if (usage && sender === 'ai') {
+    const statsDiv = document.createElement('div');
+    statsDiv.classList.add('stats-display');
+    statsDiv.textContent = `Tokens: ${usage.total_tokens} (${usage.prompt_tokens} prompt, ${usage.completion_tokens} completion)`;
+    messageDiv.appendChild(statsDiv);
+  }
+  
+  chatContainer.insertBefore(messageDiv, typingIndicator);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  
+  // Add to conversation history
+  conversationHistory.push({
+    role: sender === 'user' ? 'user' : 'assistant',
+    content: content
+  });
+}
       
       // Process code blocks in the AI's response
       function processCodeBlocks(text) {
-        // Make sure text is a string
-        if (typeof text !== 'string') {
-          return text;
-        }
-        
-        // Check for code blocks with 
-const codeBlockRegex = /
-(?:(\w+)\n)?([\s\S]*?)
-/g;
-        return text.replace(codeBlockRegex, (match, language, code) => {
-          language = language || '';
-          return `<pre><code class="language-${language}">${escapeHtml(code.trim())}</code></pre>`;
-        });
-      }
+  // Ensure text is a string
+  if (typeof text !== 'string') {
+    return text; // Return as-is if not a string
+  }
+  
+  // Check for code blocks with ```
+  const codeBlockRegex = /```(?:(\w+)\n)?([\s\S]*?)```/g;
+  return text.replace(codeBlockRegex, (match, language, code) => {
+    language = language || '';
+    return `<pre><code class="language-${language}">${escapeHtml(code.trim())}</code></pre>`;
+  });
+}
       
       // Escape HTML special characters
       function escapeHtml(unsafe) {
