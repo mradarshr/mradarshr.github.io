@@ -44,8 +44,36 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             chatInterface.style.opacity = '1';
             
-            // Add initial AI message
-            addMessage("Hello! I'm an AI assistant powered by Llama 3. How can I help you today?", 'ai');
+            // Initial messages will come from our first API call
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+            
+            // Make initial API call
+            fetch('/api/chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ messages: conversationHistory }),
+            })
+            .then(response => response.json())
+            .then(data => {
+              typingIndicator.style.display = 'none';
+              
+              // Handle the nested response structure
+              if (data.response && data.response.response) {
+                addMessage(data.response.response, 'ai');
+              } else if (data.error) {
+                addMessage(`Error: ${data.error}`, 'ai');
+              } else {
+                addMessage("Hello! I'm an AI assistant powered by Llama 3. How can I help you today?", 'ai');
+              }
+            })
+            .catch(error => {
+              typingIndicator.style.display = 'none';
+              addMessage("Hello! I'm an AI assistant powered by Llama 3. How can I help you today?", 'ai');
+              console.error('Error making initial request:', error);
+            });
             
             // Reset transition circle
             transitionCircle.style.animation = '';
@@ -58,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       // Function to add a message to the chat
-      function addMessage(content, sender) {
+      function addMessage(content, sender, usage = null) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
@@ -69,6 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         messageDiv.innerHTML = content;
+        
+        // Add token usage stats if available
+        if (usage && sender === 'ai') {
+          const statsDiv = document.createElement('div');
+          statsDiv.classList.add('stats-display');
+          statsDiv.textContent = `Tokens: ${usage.total_tokens} (${usage.prompt_tokens} prompt, ${usage.completion_tokens} completion)`;
+          messageDiv.appendChild(statsDiv);
+        }
+        
         chatContainer.insertBefore(messageDiv, typingIndicator);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         
@@ -132,10 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
           
           if (data.error) {
             addMessage(`Error: ${data.error}`, 'ai');
+          } else if (data.response && data.response.response) {
+            // Handle the nested response structure
+            addMessage(data.response.response, 'ai', data.response.usage);
           } else {
-            // Simulate typing for a more natural feel
-            const responseText = data.response;
-            addMessage(responseText, 'ai');
+            addMessage("I'm sorry, I couldn't process your request. Please try again.", 'ai');
           }
         } catch (error) {
           addMessage(`Sorry, something went wrong. Please try again later.`, 'ai');
