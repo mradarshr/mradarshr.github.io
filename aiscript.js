@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInterface.style.opacity = '1';
         
         // Default message
-        const defaultMessage = "Hi! Welcome to VED's Trained AI. It's nice to meet you. Is there something I can help you with, or would you like to chat?";
+        const defaultMessage = "Hi! Welcome to VED's AI. It's nice to meet you. Is there something I can help you with, or would you like to chat?";
         
         // Add the default AI message
         addMessage(defaultMessage, 'ai');
