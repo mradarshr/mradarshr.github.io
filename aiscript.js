@@ -121,16 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Process code blocks in the AI's response
       function processCodeBlocks(text) {
-    // Ensure text is a string
-    text = String(text); // Convert non-string values to string
-    
-    // Check for code blocks with ```
-    const codeBlockRegex = /```(?:(\w+)\n)?([\s\S]*?)```/g;
-    return text.replace(codeBlockRegex, (match, language, code) => {
-        language = language || '';
-        return `<pre><code class="language-${language}">${escapeHtml(code.trim())}</code></pre>`;
-    });
-}
+        // Make sure text is a string
+        if (typeof text !== 'string') {
+          return text;
+        }
+        
+        // Check for code blocks with 
+const codeBlockRegex = /
+(?:(\w+)\n)?([\s\S]*?)
+/g;
+        return text.replace(codeBlockRegex, (match, language, code) => {
+          language = language || '';
+          return `<pre><code class="language-${language}">${escapeHtml(code.trim())}</code></pre>`;
+        });
+      }
       
       // Escape HTML special characters
       function escapeHtml(unsafe) {
