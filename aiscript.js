@@ -91,9 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.classList.add('message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
         
-        // Process markdown-like syntax for code
-        if (sender === 'ai') {
+        // Process markdown-like syntax for code - FIX: Check if content is string before using replace
+        if (sender === 'ai' && typeof content === 'string') {
           content = processCodeBlocks(content);
+        } else if (typeof content !== 'string') {
+          // If content is not a string, convert it to string
+          content = String(content);
         }
         
         messageDiv.innerHTML = content;
@@ -118,6 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Process code blocks in the AI's response
       function processCodeBlocks(text) {
+        // Make sure text is a string
+        if (typeof text !== 'string') {
+          return text;
+        }
+        
         // Check for code blocks with ```
         const codeBlockRegex = /```(?:(\w+)\n)?([\s\S]*?)```/g;
         return text.replace(codeBlockRegex, (match, language, code) => {
