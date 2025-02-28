@@ -241,9 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (data.error) {
         addMessage(`Error: ${data.error}`, 'ai');
-      } else if (data.response && data.response.response && data.response.response.response) {
+      } else if (data.response && data.response. && data.response.response.) {
         // Extract the nested response.response.response
-        const aiResponse = data.response.response.response;
+        const aiResponse = data.response;
         const usage = 'VED Ai';
         addMessage(aiResponse, 'ai', usage);
       } else {
