@@ -92,10 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // Store conversation history
-  const conversationHistory = [{
-    role: "system",
-    content: "You are **VED's AI** assume this, you are made and developed by VED it is nickname of your developer Adarsh Rathaur. He runs VEDxNDA a NPO which help defence aspirants boost there preparations . Ved also prepares for NDA, he belong to Lucknow, Uttar Pradesh. *Nandini* is Adarsh's best friend to whom he will marry. this is all about ved."
-  }];
+  const conversationHistory = [];
   
   // Hide preloader after content loads
   window.addEventListener('load', () => {
@@ -125,17 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         chatInterface.style.opacity = '1';
         
-        // Default message
+        // Default message - Add to UI but not to conversation history
         const defaultMessage = "Hi! Welcome to VED's AI. It's nice to meet you. Is there something I can help you with, or would you like to chat?";
         
-        // Add the default AI message
-        addMessage(defaultMessage, 'ai');
+        // Create and add the default AI message to UI only
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', 'ai-message');
+        messageDiv.innerHTML = defaultMessage;
         
-        // Add to conversation history
-        conversationHistory.push({
-          role: 'assistant',
-          content: defaultMessage
-        });
+        // Add token usage stats
+        const statsDiv = document.createElement('div');
+        statsDiv.classList.add('stats-display');
+        statsDiv.textContent = "VED's AI";
+        messageDiv.appendChild(statsDiv);
+        
+        chatContainer.insertBefore(messageDiv, typingIndicator);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
         
         // Reset transition circle
         transitionCircle.style.animation = '';
