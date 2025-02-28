@@ -9,6 +9,87 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageInput = document.getElementById('message-input');
   const sendButton = document.getElementById('send-button');
   const typingIndicator = document.getElementById('typing-indicator');
+
+  document.getElementById('chat-container').addEventListener('click', function(e) {
+    // Check if the click is on the clipboard icon (the ::after pseudo-element)
+    // We can detect this by checking if the click position is in the area where the icon would be
+    const target = e.target;
+    
+    if (target.classList.contains('message')) {
+      const rect = target.getBoundingClientRect();
+      const isUserMessage = target.classList.contains('user-message');
+      const isAiMessage = target.classList.contains('ai-message');
+      
+      // Check if click is in the clipboard icon area
+      if ((isUserMessage && e.clientX < rect.left) || 
+          (isAiMessage && e.clientX > rect.right)) {
+        
+        // Get the text content of the message
+        const textToCopy = target.textContent.trim();
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            // Show a temporary "Copied!" tooltip
+            const tooltip = document.createElement('div');
+            tooltip.textContent = 'Copied!';
+            tooltip.style.position = 'absolute';
+            tooltip.style.backgroundColor = 'rgba(0,0,0,0.7)';
+            tooltip.style.color = 'white';
+            tooltip.style.padding = '5px 10px';
+            tooltip.style.borderRadius = '4px';
+            tooltip.style.fontSize = '12px';
+            tooltip.style.zIndex = '1000';
+            tooltip.style.opacity = '0';
+            tooltip.style.transition = 'opacity 0.3s ease';
+            
+            // Position the tooltip
+            if (isUserMessage) {
+              tooltip.style.left = (rect.left - 70) + 'px';
+            } else {
+              tooltip.style.left = (rect.right + 10) + 'px';
+            }
+            tooltip.style.top = (rect.top + rect.height/2 - 10) + 'px';
+            
+            // Add to DOM and animate
+            document.body.appendChild(tooltip);
+            setTimeout(() => { tooltip.style.opacity = '1'; }, 10);
+            
+            // Remove after 1.5 seconds
+            setTimeout(() => {
+              tooltip.style.opacity = '0';
+              setTimeout(() => {
+                document.body.removeChild(tooltip);
+              }, 300);
+            }, 1500);
+          })
+          .catch(err => {
+            console.error('Failed to copy text: ', err);
+          });
+      }
+    }
+  });
+  
+  // For better user experience, change cursor to pointer when hovering near the edges of messages
+  document.getElementById('chat-container').addEventListener('mousemove', function(e) {
+    const messages = document.querySelectorAll('.message');
+    
+    messages.forEach(message => {
+      const rect = message.getBoundingClientRect();
+      const isUserMessage = message.classList.contains('user-message');
+      const isAiMessage = message.classList.contains('ai-message');
+      
+      // Check if mouse is in the clipboard icon area
+      if ((isUserMessage && e.clientX < rect.left && e.clientX > rect.left - 30 && 
+           e.clientY > rect.top && e.clientY < rect.bottom) || 
+          (isAiMessage && e.clientX > rect.right && e.clientX < rect.right + 30 && 
+           e.clientY > rect.top && e.clientY < rect.bottom)) {
+        document.body.style.cursor = 'pointer';
+      } else {
+        document.body.style.cursor = '';
+      }
+    });
+  });
   
   // Store conversation history
   const conversationHistory = [{
