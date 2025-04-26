@@ -57,7 +57,7 @@ function openPopup(recordingSchedule, strtotime) {
   heading.innerText = 'Choose Quality';
 
   const createButton = (text, quality) => {
-    const stream_url = `https://plyrv.pages.dev/#https://liveclasses.cloud-front.in/live/${recordingSchedule}.m3u8?starttime_epoch=${strtotime}${quality}`;
+    const stream_url = `https://plyrv.pages.dev/#https://livestream-pull.cloud-front.in/live-hls/${recordingSchedule}_${quality}.m3u8?start=${strtotime}&end=1927156522&mode=2`;
     const button = document.createElement('a');
     button.innerText = text;
     button.className = 'quality-btn';
@@ -71,11 +71,11 @@ function openPopup(recordingSchedule, strtotime) {
   const highQuality = createButton('High Quality', '');
   const mediumQuality = createButton(
     'Medium Quality',
-    '&endtime_epoch=1927156522&mode=4&txCodecTempName=360p&timeshift=1'
+    'sd'
   );
   const lowQuality = createButton(
     'Low Quality',
-    '&endtime_epoch=1927156522&mode=4&txCodecTempName=240p&timeshift=1'
+    'ld'
   );
 
   popupCard.appendChild(closeButton);
